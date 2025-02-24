@@ -1,0 +1,7 @@
+dietPlanId,name,description,goal,recommendedCalories,mealPlan
+369f468a-b1d1-4212-bcda-f2866a536d36,Weight Loss Plan 1,Low-calorie diet for weight loss,Weight Loss,1500,"{'breakfast': 'Oatmeal with fruits', 'lunch': 'Grilled Chicken with quinoa', 'dinner': 'Salmon with steamed veggies'}"
+0cf88af9-b5f0-4543-894b-14371d892b56,Weight Loss Plan 2,High-protein diet for fat loss,Weight Loss,1400,"{'breakfast': 'Greek yogurt with nuts', 'lunch': 'Lentil soup with whole wheat bread', 'dinner': 'Grilled fish with mashed potatoes'}"
+eb4fb599-34f3-4de2-8395-ae9ac9c81342,Maintenance Plan 1,Balanced diet for maintaining weight,Maintenance,2000,"{'breakfast': 'Scrambled eggs with toast', 'lunch': 'Turkey sandwich with salad', 'dinner': 'Grilled tofu with rice'}"
+88e442df-7798-43c1-8c6d-a4a5eb6d70de,Maintenance Plan 2,Moderate calorie diet for stable weight,Maintenance,2100,"{'breakfast': 'Smoothie with protein', 'lunch': 'Buddha bowl with chickpeas', 'dinner': 'Stir-fried shrimp with noodles'}"
+86964ddf-5667-414f-bc7b-27954ad7112e,Muscle Gain Plan 1,High-protein diet for muscle gain,Muscle Gain,2800,"{'breakfast': 'Avocado toast with eggs', 'lunch': 'Chicken Caesar salad', 'dinner': 'Vegetable curry with brown rice'}"
+605e4945-48f0-4e13-8f38-056fbfac2b31,Muscle Gain Plan 2,Calorie-rich diet for muscle growth,Muscle Gain,3000,"{'breakfast': 'Protein pancakes with syrup', 'lunch': 'Steak with mashed potatoes', 'dinner': 'Grilled salmon with rice and vegetables'}"
