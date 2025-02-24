@@ -1,1 +1,2 @@
-# smart_diet_planner
+# Smart Diet Planner
+

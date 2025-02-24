@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Recommendation Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background: #e4e4e4;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .back-button {
+            display: block;
+            margin-top: 15px;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background: #0056b3;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Recommended Diet Plan</h2>
+        <p><strong>Diet Plan Name:</strong> {{ name }}</p>
+        <p><strong>Description:</strong> {{ description }}</p>
+        <p><strong>Recommended Calories:</strong> {{ recommendedCalories }}</p>
+        
+        <h3>Meal Plan</h3>
+        <ul>
+            <li><strong>Breakfast:</strong> {{ mealPlan.breakfast }}</li>
+            <li><strong>Lunch:</strong> {{ mealPlan.lunch }}</li>
+            <li><strong>Dinner:</strong> {{ mealPlan.dinner }}</li>
+        </ul>
+        
+        <a href="/" class="back-button">Go Back</a>
+    </div>
+</body>
+</html>
