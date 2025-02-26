@@ -8,7 +8,7 @@ import ast
 from flask import Flask, request, jsonify, render_template
 import pymysql
 pymysql.install_as_MySQLdb()
-from models import db
+from models import db, UserAccount, UserDietRecommendation, UserProfile
 
 app = Flask(__name__)
 # 🔹 Set a secret key for sessions and security
@@ -44,62 +44,51 @@ with open(reverse_mapping_path, 'rb') as file:
 
 diet_plans = pd.read_csv("dataset_model_training/diet_plans_goal_based.csv")
 
+def saveInDatabase(inputJson, recommended_diet):
+    # Capture User Input
+    email = inputJson["email"]
+    name = inputJson["name"]
+    age = int(inputJson["age"])
+    gender = inputJson["gender"]
+    weight = float(inputJson["weight"])
+    height = float(inputJson["height"])
+    activityLevel = inputJson["activityLevel"]
+    goal = inputJson["goal"]
+
+    # Create new user
+    new_user = UserAccount(
+        userId=str(uuid.uuid4()), email=email#, passwordHash=password
+    )
+    db.session.add(new_user)
+    db.session.commit()
+
+    # Create user profile
+    new_profile = UserProfile(
+        profileId=str(uuid.uuid4()),
+        userId=new_user.userId,
+        name=name,
+        age=age,
+        gender=gender,
+        weight=weight,
+        height=height,
+        activityLevel=activityLevel,
+        goal=goal
+    )
+    db.session.add(new_profile)
+    db.session.commit()
+
+    # Store Recommendation
+    new_recommendation = UserDietRecommendation(
+        recommendationId=str(uuid.uuid4()),
+        userId=new_user.userId,
+        dietPlanId=recommended_diet['dietPlanId']
+    )
+    db.session.add(new_recommendation)
+    db.session.commit()
+
+
 @app.route('/')
 def home():
-    if request.method == "POST":
-        # Capture User Input
-        email = request.form["email"]
-        password = request.form["password"]  # In production, hash the password
-        name = request.form["name"]
-        age = int(request.form["age"])
-        gender = request.form["gender"]
-        weight = float(request.form["weight"])
-        height = float(request.form["height"])
-        activityLevel = request.form["activityLevel"]
-        goal = request.form["goal"]
-
-        # Check if user exists
-        existing_user = UserAccount.query.filter_by(email=email).first()
-        if existing_user:
-            return "User already exists! Please log in.", 400
-
-        # Create new user
-        new_user = UserAccount(
-            userId=str(uuid.uuid4()), email=email, passwordHash=password
-        )
-        db.session.add(new_user)
-        db.session.commit()
-
-        # Create user profile
-        new_profile = UserProfile(
-            profileId=str(uuid.uuid4()),
-            userId=new_user.userId,
-            name=name,
-            age=age,
-            gender=gender,
-            weight=weight,
-            height=height,
-            activityLevel=activityLevel,
-            goal=goal
-        )
-        db.session.add(new_profile)
-        db.session.commit()
-
-        # Recommend a Diet Plan based on Goal
-        diet_plan = DietPlan.query.filter_by(goal=goal).first()
-        if not diet_plan:
-            return "No diet plan available for the selected goal!", 400
-
-        # Store Recommendation
-        new_recommendation = UserDietRecommendation(
-            recommendationId=str(uuid.uuid4()),
-            userId=new_user.userId,
-            dietPlanId=diet_plan.dietPlanId
-        )
-        db.session.add(new_recommendation)
-        db.session.commit()
-
-        return redirect(url_for("result", dietPlanId=diet_plan.dietPlanId))
 
     return render_template('index.html')
 
@@ -139,14 +128,8 @@ def predict():
         # Make prediction
         predicted_idx = model.predict(user_input)[0]
         
-        
-        print("Predicted index:", predicted_idx)
-        
-        
         predicted_diet_id = str(reverse_mapping.get(predicted_idx))
         
-        print("Mapped Diet Plan ID:", predicted_diet_id)
-
         if predicted_diet_id is None:
             return "No suitable diet plan found", 404
 
@@ -171,6 +154,8 @@ def predict():
                 meal_plan = ast.literal_eval(meal_plan_str)  # Try as Python dict
             except (ValueError, SyntaxError) as e:
                 return f"Error parsing meal plan data: {str(e)}", 500
+
+        saveInDatabase(data, recommended_diet)
 
         return render_template('result.html', 
                                name=recommended_diet['name'], 
